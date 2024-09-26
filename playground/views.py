@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.db.models import Q, F
    # Q is short for query
 from django.http import HttpResponse
-from store.models import Product
+from store.models import Product, OrderItem
 
 def say_hello(request):
         #keyword = value 
@@ -62,5 +62,41 @@ def say_hello(request):
       # to return the first five objects in the arrey, 0,1,2,3,4 exclude five
     queryset = Product.objects.all()[:5]
 
+           # seleting fields in query
+    queryset = Product.objects.values('id', 'title', 'collection__title')
+
+     
 
     return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
+
+def selecting_field(request):
+   #  sets = Product.objects.values('id', 'title', 'collection__title')
+   #      # we get the result in dictionary form
+
+   #  sets = Product.objects.values_list('id', 'title', 'collection__title')
+   #      # we get the result in tuple form and the values only
+
+
+   #  sets = Product.objects.order_by('title')
+
+   #  context = {'productions' : list(sets)}
+
+
+   #  return render(request, 'hello2.html' , context)
+
+
+
+   #  queryset = OrderItem.objects.values('product_id').distinct()
+   #  context = {'productions' : list(product)}
+
+    product = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct())  
+   
+
+       # we use distinct() method to remove diplication
+    product = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct()).order_by('title')   
+
+
+    context = {'productions' : list(product)}
+
+
+    return render(request, 'hello2.html' , context)
