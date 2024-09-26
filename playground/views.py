@@ -52,8 +52,15 @@ def say_hello(request):
     # return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
 
 
-    product = Product.objects.order_by('unit_price')[0]
+    # product = Product.objects.order_by('unit_price')[0]
       # to return an individual field
 
 
-    return render(request, 'hello.html' ,{'name': 'Yonas Muche','product' : 'product'})
+   # return render(request, 'hello.html' ,{'name': 'Yonas Muche','product' : 'product'})
+
+
+      # to return the first five objects in the arrey, 0,1,2,3,4 exclude five
+    queryset = Product.objects.all()[:5]
+
+
+    return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
