@@ -12,27 +12,48 @@ def say_hello(request):
     #queryset = Product.objects.filter(title__icontains= 'coffee')
         # 'i' before contains is used for solving case sensitive issues.
 
-    queryset = Product.objects.filter(last_update__year=2021)
+    # queryset = Product.objects.filter(last_update__year=2021)
           
-    # queryset = Product.objects.filter(description__isnull= True) 
-           #to return all products without description
+    # # queryset = Product.objects.filter(description__isnull= True) 
+    #        #to return all products without description
 
-    queryset = Product.objects.filter(inventory__lt=10).filter(unit_price__lt=20)
-    #queryset = Product.objects.filter(inventory__lt=10, unit_price__lt=20)
-           # it is similar with the above
+    # queryset = Product.objects.filter(inventory__lt=10).filter(unit_price__lt=20)
+    # #queryset = Product.objects.filter(inventory__lt=10, unit_price__lt=20)
+    #        # it is similar with the above
 
-      # producs: inventory < 10 OR unit_price < 20
-    queryset = Product.objects.filter(Q(inventory__lt=10) | Q(unit_price__lt=20) )
-      # it lists all producs either their inventory values are less than 10 or unit_price are less than 20.
-      # '|' is an OR operator
+    #   # producs: inventory < 10 OR unit_price < 20
+    # queryset = Product.objects.filter(Q(inventory__lt=10) | Q(unit_price__lt=20) )
+    #   # it lists all producs either their inventory values are less than 10 or unit_price are less than 20.
+    #   # '|' is an OR operator
 
-       # producs: inventory < 10 OR unit_price < 20
-    queryset = Product.objects.filter(Q(inventory__lt=10) & ~Q(unit_price__lt=20) )
-                    # '~' is a negative form
+    #    # producs: inventory < 10 OR unit_price < 20
+    # queryset = Product.objects.filter(Q(inventory__lt=10) & ~Q(unit_price__lt=20) )
+    #                 # '~' is a negative form
 
-        # producs: inventory = unit_price 
-    queryset = Product.objects.filter(inventory = F('unit_price'))
-      # a product having equal inventory and unit_price values
+    #     # producs: inventory = unit_price 
+    # queryset = Product.objects.filter(inventory = F('unit_price'))
+    #   # a product having equal inventory and unit_price values
 
-    return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
+    # queryset = Product.objects.order_by('title')
+    #   # sort products by ascending order
 
+    # queryset = Product.objects.order_by('unit_price' ,'-title')
+    #     # unit_price in ascending order and title in descending order
+
+    # queryset = Product.objects.order_by('unit_price' ,'-title').reverse()
+    #        # reverse the directions of the sort
+
+
+       
+
+
+
+
+    # return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
+
+
+    product = Product.objects.order_by('unit_price')[0]
+      # to return an individual field
+
+
+    return render(request, 'hello.html' ,{'name': 'Yonas Muche','product' : 'product'})
