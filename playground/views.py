@@ -95,6 +95,11 @@ def selecting_field(request):
        # we use distinct() method to remove diplication
     product = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct()).order_by('title')   
 
+         # To specify the field that we wanna read from the db    
+    product = Product.objects.only('id', 'title')
+
+    product = Product.objects.defer('description')
+
 
     context = {'productions' : list(product)}
 

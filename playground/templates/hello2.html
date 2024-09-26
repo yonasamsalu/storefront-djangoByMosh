@@ -3,7 +3,7 @@
     <body>
        <ul>
         {% for product in productions %}
-        <li>{{ product.title }}</li>
+        <li>{{ product.title }} ${{ product.description }}</li>
         {% endfor %}
        </ul>
     </body>
