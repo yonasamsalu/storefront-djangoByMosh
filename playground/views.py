@@ -1,6 +1,8 @@
 
 from django.shortcuts import render
 from django.db.models import Q, F
+from django.db.models.aggregates import Count, Max, Min, Avg
+
    # Q is short for query
 from django.http import HttpResponse
 from store.models import Product, OrderItem, Order
@@ -112,11 +114,17 @@ def seleting_releted_field(request):
     # prefetch_related (n)   
     queryset2 = Product.objects.select_related('collection').all()
     queryset2 = Product.objects.prefetch_related('promotions').select_related('collection').all()
+
       # Get the last 5 orders with their customer and items (inlude product) 
     queryset3 = Order.objects.select_related('customer').prefetch_related('orderitem_set__product').order_by('-placed_at') [:5]
 
 
-    context = {'orders': list(queryset3)}
+def aggrigate(request):
+            # Aggregating Objects
+    result = Product.objects.aggregate(count= Count('id'), min_price = Min('unit_price'))
 
 
-    return render(request, 'hello3.html', context)
+    context = {'name':'Yonas','result': result}
+
+
+    return render(request, 'hello4.html', context)
