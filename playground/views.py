@@ -1,7 +1,8 @@
 
 from django.shortcuts import render
 from django.db.models import Q, F
-from django.db.models import Value
+from django.db.models import Value,Func
+from django.db.models.functions import Concat
 from django.db.models.aggregates import Count, Max, Min, Avg
 
    # Q is short for query
@@ -126,6 +127,12 @@ def aggrigate(request):
 
          # Annotating Objects
     result = Customer.objects.annotate(new_id=F('id'))
+
+         # CONCAT
+    result = Customer.objects.annotate(full_name=Func(F('first_name'),Value(''),F('last_name'), function='CONCAT'))
+    
+    result = Customer.objects.annotate(full_name=Concat('first_name', Value(''), 'last_name'))
+
 
 
     context = {'name':'Yonas','result': result}
