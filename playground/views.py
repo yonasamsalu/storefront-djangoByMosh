@@ -1,11 +1,12 @@
 
 from django.shortcuts import render
 from django.db.models import Q, F
+from django.db.models import Value
 from django.db.models.aggregates import Count, Max, Min, Avg
 
    # Q is short for query
 from django.http import HttpResponse
-from store.models import Product, OrderItem, Order
+from store.models import Product, OrderItem, Order,Customer
 
 def say_hello(request):
         #keyword = value 
@@ -122,6 +123,9 @@ def seleting_releted_field(request):
 def aggrigate(request):
             # Aggregating Objects
     result = Product.objects.aggregate(count= Count('id'), min_price = Min('unit_price'))
+
+         # Annotating Objects
+    result = Customer.objects.annotate(new_id=F('id'))
 
 
     context = {'name':'Yonas','result': result}
