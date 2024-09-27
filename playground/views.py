@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.db.models import Q, F
    # Q is short for query
 from django.http import HttpResponse
-from store.models import Product, OrderItem
+from store.models import Product, OrderItem, Order
 
 def say_hello(request):
         #keyword = value 
@@ -105,3 +105,18 @@ def selecting_field(request):
 
 
     return render(request, 'hello2.html' , context)
+
+
+def seleting_releted_field(request):
+    # select_related (1)
+    # prefetch_related (n)   
+    queryset2 = Product.objects.select_related('collection').all()
+    queryset2 = Product.objects.prefetch_related('promotions').select_related('collection').all()
+      # Get the last 5 orders with their customer and items (inlude product) 
+    queryset3 = Order.objects.select_related('customer').prefetch_related('orderitem_set__product').order_by('-placed_at') [:5]
+
+
+    context = {'orders': list(queryset3)}
+
+
+    return render(request, 'hello3.html', context)

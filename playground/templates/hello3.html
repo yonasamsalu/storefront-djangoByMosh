@@ -1,0 +1,10 @@
+
+<html>
+    <body>
+       <ul>
+        {% for order in orders %}
+        <li>{{ order.id }} - {{ order.customer.first_name }}</li>
+        {% endfor %}
+       </ul>
+    </body>
+</html>
