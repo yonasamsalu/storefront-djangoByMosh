@@ -151,6 +151,8 @@ def aggrigate(request):
 
 def say_hello(request):
     
+    TaggedItem.objects.get_tags_for(Product, 1)
+
     content_type = ContentType.objects.get_for_model(Product)
     queryset = TaggedItem.objects.select_related('tag').filter(content_type=content_type, id=1)
     
