@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from store.models import Product, OrderItem, Order,Customer, Collection
 from tags.models import TaggedItem 
 
-def say_hello(request):
+# def say_hello(request):
         #keyword = value 
         # gt is for greater than
 
@@ -67,106 +67,117 @@ def say_hello(request):
 
 
       # to return the first five objects in the arrey, 0,1,2,3,4 exclude five
-    queryset = Product.objects.all()[:5]
+#     queryset = Product.objects.all()[:5]
 
-           # seleting fields in query
-    queryset = Product.objects.values('id', 'title', 'collection__title')
+#            # seleting fields in query
+#     queryset = Product.objects.values('id', 'title', 'collection__title')
 
      
 
-    return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
+#     return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
 
-def selecting_field(request):
-   #  sets = Product.objects.values('id', 'title', 'collection__title')
-   #      # we get the result in dictionary form
+# def selecting_field(request):
+#    #  sets = Product.objects.values('id', 'title', 'collection__title')
+#    #      # we get the result in dictionary form
 
-   #  sets = Product.objects.values_list('id', 'title', 'collection__title')
-   #      # we get the result in tuple form and the values only
-
-
-   #  sets = Product.objects.order_by('title')
-
-   #  context = {'productions' : list(sets)}
+#    #  sets = Product.objects.values_list('id', 'title', 'collection__title')
+#    #      # we get the result in tuple form and the values only
 
 
-   #  return render(request, 'hello2.html' , context)
+#    #  sets = Product.objects.order_by('title')
+
+#    #  context = {'productions' : list(sets)}
+
+
+#    #  return render(request, 'hello2.html' , context)
 
 
 
-   #  queryset = OrderItem.objects.values('product_id').distinct()
-   #  context = {'productions' : list(product)}
+#    #  queryset = OrderItem.objects.values('product_id').distinct()
+#    #  context = {'productions' : list(product)}
 
-    product = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct())  
+#     product = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct())  
    
 
-       # we use distinct() method to remove diplication
-    product = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct()).order_by('title')   
+#        # we use distinct() method to remove diplication
+#     product = Product.objects.filter(id__in = OrderItem.objects.values('product_id').distinct()).order_by('title')   
 
-         # To specify the field that we wanna read from the db    
-    product = Product.objects.only('id', 'title')
+#          # To specify the field that we wanna read from the db    
+#     product = Product.objects.only('id', 'title')
 
-    product = Product.objects.defer('description')
-
-
-    context = {'productions' : list(product)}
+#     product = Product.objects.defer('description')
 
 
-    return render(request, 'hello2.html' , context)
+#     context = {'productions' : list(product)}
 
 
-def seleting_releted_field(request):
-    # select_related (1)
-    # prefetch_related (n)   
-    queryset2 = Product.objects.select_related('collection').all()
-    queryset2 = Product.objects.prefetch_related('promotions').select_related('collection').all()
-
-      # Get the last 5 orders with their customer and items (inlude product) 
-    queryset3 = Order.objects.select_related('customer').prefetch_related('orderitem_set__product').order_by('-placed_at') [:5]
+#     return render(request, 'hello2.html' , context)
 
 
-def aggrigate(request):
-            # Aggregating Objects
-    result = Product.objects.aggregate(count= Count('id'), min_price = Min('unit_price'))
+# def seleting_releted_field(request):
+#     # select_related (1)
+#     # prefetch_related (n)   
+#     queryset2 = Product.objects.select_related('collection').all()
+#     queryset2 = Product.objects.prefetch_related('promotions').select_related('collection').all()
 
-         # Annotating Objects
-    result = Customer.objects.annotate(new_id=F('id'))
+#       # Get the last 5 orders with their customer and items (inlude product) 
+#     queryset3 = Order.objects.select_related('customer').prefetch_related('orderitem_set__product').order_by('-placed_at') [:5]
 
-         # CONCAT
-    result = Customer.objects.annotate(full_name=Func(F('first_name'),Value(''),F('last_name'), function='CONCAT'))
+
+# def aggrigate(request):
+#             # Aggregating Objects
+#     result = Product.objects.aggregate(count= Count('id'), min_price = Min('unit_price'))
+
+#          # Annotating Objects
+#     result = Customer.objects.annotate(new_id=F('id'))
+
+#          # CONCAT
+#     result = Customer.objects.annotate(full_name=Func(F('first_name'),Value(''),F('last_name'), function='CONCAT'))
     
-    result = Customer.objects.annotate(full_name=Concat('first_name', Value(''), 'last_name'))
+#     result = Customer.objects.annotate(full_name=Concat('first_name', Value(''), 'last_name'))
 
 
-    queryset = Customer.objects.annotate(orders_count=Count('order'))
+#     queryset = Customer.objects.annotate(orders_count=Count('order'))
 
 
-    discounted_price=ExpressionWrapper(F('unit_price') * 0.8 , output_field=DecimalField())
-    queryset = Product.objects.annotate(discounted_price = discounted_price)
+#     discounted_price=ExpressionWrapper(F('unit_price') * 0.8 , output_field=DecimalField())
+#     queryset = Product.objects.annotate(discounted_price = discounted_price)
 
 
-    context = {'name':'Yonas','result': list(queryset)}
+#     context = {'name':'Yonas','result': list(queryset)}
 
 
-    return render(request, 'hello4.html', context)
+#     return render(request, 'hello4.html', context)
 
 def say_hello(request):
     
-    TaggedItem.objects.get_tags_for(Product, 1)
+    # TaggedItem.objects.get_tags_for(Product, 1)
 
-    content_type = ContentType.objects.get_for_model(Product)
-    queryset = TaggedItem.objects.select_related('tag').filter(content_type=content_type, id=1)
+    # content_type = ContentType.objects.get_for_model(Product)
+    # queryset = TaggedItem.objects.select_related('tag').filter(content_type=content_type, id=1)
 
-            # queryset cache
-    queryset = Product.objects.all()
-    list(queryset)
-    queryset[0]
+    #         # queryset cache
+    # queryset = Product.objects.all()
+    # list(queryset)
+    # queryset[0]
 
-         # creating objects
-    collection = Collection()
-    collection.title = 'Video Games'
-    collection.featured_product=Product(pk=1)
-    collection.save()
-    collection.id
+    #      # creating objects
+    # collection = Collection()
+    # collection.title = 'Video Games'
+    # collection.featured_product=Product(pk=1)
+    # collection.save()
+    # collection.id
+
+    #       # updating objects
+    # collection = Collection.objects.get(pk=11)
+    # collection.featured_product=None
+    # collection.save()
+
+    #  # to update the whole objects from the Collection table
+    # Collection.objects.update(featured_product=None)
+        
+        # to update a single object
+    Collection.objects.filter(pk=11).update(featured_product=None)
 
 
 
