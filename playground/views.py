@@ -1,13 +1,16 @@
 
 from django.shortcuts import render
-from django.db.models import Q, F, DecimalField
-from django.db.models import Value, Func, Count, ExpressionWrapper
+from django.db.models import Q, F
+from django.db.models import Value, Func, Count
+from django.db.models import DecimalField, ExpressionWrapper
+from django.contrib.contenttypes.models import ContentType
 from django.db.models.functions import Concat
 from django.db.models.aggregates import Count, Max, Min, Avg
 
    # Q is short for query
 from django.http import HttpResponse
 from store.models import Product, OrderItem, Order,Customer
+from tags.models import TaggedItem 
 
 def say_hello(request):
         #keyword = value 
@@ -145,3 +148,12 @@ def aggrigate(request):
 
 
     return render(request, 'hello4.html', context)
+
+def say_hello(request):
+    
+    content_type = ContentType.objects.get_for_model(Product)
+    queryset = TaggedItem.objects.select_related('tag').filter(content_type=content_type, id=1)
+    
+    context = {'name':'Yonas','tags': list(queryset)}
+
+    return render(request,'hello.html',context)
