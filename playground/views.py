@@ -1,7 +1,7 @@
 
 from django.shortcuts import render
-from django.db.models import Q, F
-from django.db.models import Value, Func, Count
+from django.db.models import Q, F, DecimalField
+from django.db.models import Value, Func, Count, ExpressionWrapper
 from django.db.models.functions import Concat
 from django.db.models.aggregates import Count, Max, Min, Avg
 
@@ -135,6 +135,10 @@ def aggrigate(request):
 
 
     queryset = Customer.objects.annotate(orders_count=Count('order'))
+
+
+    discounted_price=ExpressionWrapper(F('unit_price') * 0.8 , output_field=DecimalField())
+    queryset = Product.objects.annotate(discounted_price = discounted_price)
 
 
     context = {'name':'Yonas','result': list(queryset)}
