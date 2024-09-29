@@ -1,7 +1,7 @@
 
 from django.shortcuts import render
 from django.db.models import Q, F
-from django.db.models import Value,Func
+from django.db.models import Value, Func, Count
 from django.db.models.functions import Concat
 from django.db.models.aggregates import Count, Max, Min, Avg
 
@@ -134,8 +134,10 @@ def aggrigate(request):
     result = Customer.objects.annotate(full_name=Concat('first_name', Value(''), 'last_name'))
 
 
+    queryset = Customer.objects.annotate(orders_count=Count('order'))
 
-    context = {'name':'Yonas','result': result}
+
+    context = {'name':'Yonas','result': list(queryset)}
 
 
     return render(request, 'hello4.html', context)
