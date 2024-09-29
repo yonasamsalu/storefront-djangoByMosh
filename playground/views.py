@@ -9,7 +9,7 @@ from django.db.models.aggregates import Count, Max, Min, Avg
 
    # Q is short for query
 from django.http import HttpResponse
-from store.models import Product, OrderItem, Order,Customer
+from store.models import Product, OrderItem, Order,Customer, Collection
 from tags.models import TaggedItem 
 
 def say_hello(request):
@@ -160,6 +160,15 @@ def say_hello(request):
     queryset = Product.objects.all()
     list(queryset)
     queryset[0]
+
+         # creating objects
+    collection = Collection()
+    collection.title = 'Video Games'
+    collection.featured_product=Product(pk=1)
+    collection.save()
+    collection.id
+
+
 
     context = {'name':'Yonas'}
 
