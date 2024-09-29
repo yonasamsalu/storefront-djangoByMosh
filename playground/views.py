@@ -155,7 +155,12 @@ def say_hello(request):
 
     content_type = ContentType.objects.get_for_model(Product)
     queryset = TaggedItem.objects.select_related('tag').filter(content_type=content_type, id=1)
-    
-    context = {'name':'Yonas','tags': list(queryset)}
+
+            # queryset cache
+    queryset = Product.objects.all()
+    list(queryset)
+    queryset[0]
+
+    context = {'name':'Yonas'}
 
     return render(request,'hello.html',context)
