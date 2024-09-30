@@ -6,6 +6,7 @@ from django.db.models import DecimalField, ExpressionWrapper
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.functions import Concat
 from django.db.models.aggregates import Count, Max, Min, Avg
+from django.db import transaction
 
    # Q is short for query
 from django.http import HttpResponse
@@ -144,7 +145,7 @@ from tags.models import TaggedItem
 
 
 #     return render(request, 'hello4.html', context)
-
+@transaction.atomic()
 def say_hello(request):
     
     # TaggedItem.objects.get_tags_for(Product, 1)
@@ -175,14 +176,27 @@ def say_hello(request):
     #     # to update a single object
     # Collection.objects.filter(pk=11).update(featured_product=None)
 
-         # Deleting multiple objects 
-         # in this case all objects their id is grearer than five
-    Collection.objects.filter(id__range=(11,16)).delete()
+    #      # Deleting multiple objects 
+    #      # in this case all objects their id is grearer than five
+    # Collection.objects.filter(id__range=(11,16)).delete()
 
     #     # Deleting a single object
     # collection=Collection.objects(pk = 11)
     # collection.delete()
 
+    # ...
+
+    with transaction.atomic():
+        order =Order()
+        order.customer_id = 1
+        order.save()
+
+        item = OrderItem()
+        item.order = order
+        item.product_id = 1
+        item.quantity = 1
+        item.unit_price = 10
+        item.save()
 
 
     context = {'name':'Yonas'}
