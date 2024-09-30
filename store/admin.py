@@ -15,3 +15,11 @@ class ProductAdmin(admin.ModelAdmin):
 # Register the Order model with the admin site
 admin.site.register(models.Collection)
 
+@admin.register(models.Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ['first_name', 'last_name', 'membership']
+    list_editable = ['membership']
+    ordering = ['first_name', 'last_name']
+    list_per_page = 10
+
+
