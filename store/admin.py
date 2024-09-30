@@ -4,7 +4,7 @@ from . import models
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'unit_price']
-
+    list_editable = ['unit_price']
 
 # Register the Order model with the admin site
 admin.site.register(models.Collection)
