@@ -204,6 +204,8 @@ def say_hello(request):
     #      # Select id and title fields from the table
     # queryset = Product.objects.raw('SELECT id, title FROM store_product')
 
+    with connection.cursor() as cursor:
+        cursor.execute
 
           # we can delete update and so on in the excute() method
     
