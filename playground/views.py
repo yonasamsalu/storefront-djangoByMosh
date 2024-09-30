@@ -25,7 +25,7 @@ from tags.models import TaggedItem
     #        #to return all products without description
 
     # queryset = Product.objects.filter(inventory__lt=10).filter(unit_price__lt=20)
-    # #queryset = Product.objects.filter(inventory__lt=10, unit_price__lt=20)
+    # queryset = Product.objects.filter(inventory__lt=10, unit_price__lt=20)
     #        # it is similar with the above
 
     #   # producs: inventory < 10 OR unit_price < 20
@@ -51,11 +51,7 @@ from tags.models import TaggedItem
     #        # reverse the directions of the sort
 
 
-       
-
-
-
-
+    
     # return render(request, 'hello.html' ,{'name': 'Yonas Muche','products' : list(queryset)})
 
 
@@ -176,8 +172,16 @@ def say_hello(request):
     #  # to update the whole objects from the Collection table
     # Collection.objects.update(featured_product=None)
         
-        # to update a single object
-    Collection.objects.filter(pk=11).update(featured_product=None)
+    #     # to update a single object
+    # Collection.objects.filter(pk=11).update(featured_product=None)
+
+         # Deleting multiple objects 
+         # in this case all objects their id is grearer than five
+    Collection.objects.filter(id__range=(11,16)).delete()
+
+    #     # Deleting a single object
+    # collection=Collection.objects(pk = 11)
+    # collection.delete()
 
 
 
