@@ -6,7 +6,7 @@ from django.db.models import DecimalField, ExpressionWrapper
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.functions import Concat
 from django.db.models.aggregates import Count, Max, Min, Avg
-from django.db import transaction
+from django.db import transaction, connection
 
    # Q is short for query
 from django.http import HttpResponse
@@ -186,18 +186,28 @@ def say_hello(request):
 
     # ...
 
-    with transaction.atomic():
-        order =Order()
-        order.customer_id = 1
-        order.save()
+    # with transaction.atomic():
+    #     order =Order()
+    #     order.customer_id = 1
+    #     order.save()
 
-        item = OrderItem()
-        item.order = order
-        item.product_id = 1
-        item.quantity = 1
-        item.unit_price = 10
-        item.save()
+    #     item = OrderItem()
+    #     item.order = order
+    #     item.product_id = 1
+    #     item.quantity = 1
+    #     item.unit_price = 10
+    #     item.save()
 
+    #     # Select all fields from store_product table
+    # queryset = Product.objects.raw('SELECT * FROM store_product')
+
+    #      # Select id and title fields from the table
+    # queryset = Product.objects.raw('SELECT id, title FROM store_product')
+
+    with connection.cursor() as cursor:
+        cursor.execute()
+          # we can delete update and so on in the excute() method
+    
 
     context = {'name':'Yonas'}
 
