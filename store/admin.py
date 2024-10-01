@@ -14,9 +14,13 @@ class ProductAdmin(admin.ModelAdmin):
    #     # numbers of lists shown in the admin page
    #  list_per_page = 10
 
-    list_display = ['title', 'unit_price', 'inventory_status','collection']
+    list_display = ['title', 'unit_price', 'inventory_status','collection_title']
     list_editable = ['unit_price']
     list_per_page = 10
+    list_select_related = ['collection']
+
+    def collection_title(self, product):
+        return product.collection.title
     
     @admin.display(ordering='inventory')
     def inventory_status(self, product):
