@@ -3,9 +3,25 @@ from typing import Any
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
+from django.utils.html import format_html, urlencode
 from django.db.models import Count
+from django.urls import reverse
 
 from . import models
+     
+
+#   #  Overriding the base queryset
+# @admin.register(models.Collection)
+# class CollectionAdmin(admin.ModelAdmin):
+#     list_display = ['title', 'products_count']
+
+#     @admin.display(ordering= 'products_count')
+#     def products_count(self, collection):
+#         return collection.products_count
+    
+#     def get_queryset(self, request):
+#         return super().get_queryset(request).annotate(products_count=Count('product'))
+
 
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
@@ -13,11 +29,15 @@ class CollectionAdmin(admin.ModelAdmin):
 
     @admin.display(ordering= 'products_count')
     def products_count(self, collection):
-        return collection.products_count
+          #reverse('admin:app_model_page')
+        url = (reverse('admin:store_product_changelist') + '?' + urlencode({
+            'collection__id':str(collection.id)
+        }) )
+        return format_html('<a href="{}">{}</a>',url, collection.products_count)
+         
     
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(products_count=Count('product'))
-
     
 
 @admin.register(models.Product)
