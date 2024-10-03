@@ -53,6 +53,7 @@ class InventoryFilter(admin.SimpleListFilter):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
+    actions =['clear_inventory']
 
    #     # The field that is shown in the admin page
    #  list_display = ['title', 'unit_price']
@@ -76,6 +77,15 @@ class ProductAdmin(admin.ModelAdmin):
         if product.inventory <10:
             return 'Low'
         return 'Ok'
+    @admin.action(description= 'clear inventory')
+    def clear_inventory(self, request, queryset):
+        updated_count = queryset.update(inventory=0)
+        self.message_user(
+            request,
+            f'{updated_count} products were successfully updated'
+        )
+
+
 
 
 @admin.register(models.Customer)
