@@ -104,12 +104,11 @@ class CustomerAdmin(admin.ModelAdmin):
          ##  "i" before stattswith is case insensitive
 
 
+class OrderItemInline(admin.TabularInline):
+    model = models.OrderItem
+
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display =['id', 'placed_at', 'customer']
+    inlines = [OrderItemInline]
     autocomplete_fields = ['customer']
-
-
-
-
-
