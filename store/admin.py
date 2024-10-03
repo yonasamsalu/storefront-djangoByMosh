@@ -45,11 +45,11 @@ class InventoryFilter(admin.SimpleListFilter):
     parameter_name = 'inventory'
 
     def lookups(self, request, model_admin):
-        return ['<10', 'Low']
+        return [('<10', 'Low')]
     
     def queryset(self, request, queryset:QuerySet):
-        if self.value() == '10':
-            queryset.filter(inventory__lt=10)
+        if self.value() == '<10':
+            return queryset.filter(inventory__lt=10)
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
