@@ -65,6 +65,7 @@ class ProductAdmin(admin.ModelAdmin):
    #  list_editable = ['unit_price']
    #     # numbers of lists shown in the admin page
    #  list_per_page = 10
+    search_fields = ['name', 'sku']  # Add fields that are searchable
     actions =['clear_inventory']
     autocomplete_fields = ['collection']
     prepopulated_fields = {'slug':['title']}
@@ -105,7 +106,9 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 class OrderItemInline(admin.TabularInline):
+    autocomplete_fields = ['product']
     model = models.OrderItem
+    extra =0 
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
