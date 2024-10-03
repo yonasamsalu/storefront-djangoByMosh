@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from typing import Any
-from django.contrib import admin
+from django.contrib import admin,messages
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.utils.html import format_html, urlencode
@@ -82,7 +82,8 @@ class ProductAdmin(admin.ModelAdmin):
         updated_count = queryset.update(inventory=0)
         self.message_user(
             request,
-            f'{updated_count} products were successfully updated'
+            f'{updated_count} products were successfully updated.',
+            messages.ERROR
         )
 
 
