@@ -1,6 +1,5 @@
 
 from collections.abc import Callable
-from django.contrib.contenttypes.admin import GenericTabularInline
 from typing import Any
 from django.contrib import admin,messages
 from django.db.models.query import QuerySet
@@ -8,8 +7,6 @@ from django.http import HttpRequest
 from django.utils.html import format_html, urlencode
 from django.db.models import Count
 from django.urls import reverse
-from tags.models import TaggedItem
-
 from . import models
      
 
@@ -57,10 +54,6 @@ class InventoryFilter(admin.SimpleListFilter):
         if self.value() == '<10':
             return queryset.filter(inventory__lt=10)
 
-class TagInline(GenericTabularInline): 
-    autocomplete_fields = ['tag']
-    model = TaggedItem
-
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
     
@@ -75,7 +68,6 @@ class ProductAdmin(admin.ModelAdmin):
 
     search_fields = ['name', 'sku']  # Add fields that are searchable
     actions =['clear_inventory']
-    inlines = [TagInline]
     autocomplete_fields = ['collection']
     prepopulated_fields = {'slug':['title']}
     list_display = ['title', 'unit_price', 'inventory_status','collection_title']
