@@ -1,3 +1,4 @@
+
 from collections.abc import Callable
 from django.contrib.contenttypes.admin import GenericTabularInline
 from typing import Any
